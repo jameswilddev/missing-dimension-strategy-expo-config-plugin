@@ -44,6 +44,6 @@
   "types": "index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@expo/config-plugins": "^5.0.1"
+    "@expo/config-plugins": "5.0.1"
   }
 }
