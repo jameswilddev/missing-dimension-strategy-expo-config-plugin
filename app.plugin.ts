@@ -1,18 +1,18 @@
-import { ConfigPlugin, AndroidConfig } from "@expo/config-plugins";
-
-const { createBuildGradlePropsConfigPlugin } = AndroidConfig.BuildProperties;
+import { ConfigPlugin, withAppBuildGradle } from "@expo/config-plugins";
 
 type Config = Record<string, string>;
 
 const escape = (input: string): string => `'${input.replace(/'/g, "\\'")}'`;
 
 const configPlugin: ConfigPlugin<Config> = (config, props) =>
-  createBuildGradlePropsConfigPlugin<Config>(
-    Object.keys(props).map((key) => ({
-      propName: "android.missingDimensionStrategy",
-      propValueGetter: (config) =>
-        `${escape(key)}, ${escape(config[key] ?? "")}`,
-    }))
-  )(config, props);
+  withAppBuildGradle(config, (config) => {
+    for (const key in props) {
+      config.modResults.contents += `\ndefaultConfig {\n\tmissingDimensionStrategy ${escape(
+        key
+      )}, ${escape(props[key] ?? "")}\n}\n`;
+    }
+
+    return config;
+  });
 
 export default configPlugin;
