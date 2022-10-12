@@ -7,9 +7,9 @@ const escape = (input: string): string => `'${input.replace(/'/g, "\\'")}'`;
 const configPlugin: ConfigPlugin<Config> = (config, props) =>
   withAppBuildGradle(config, (config) => {
     for (const key in props) {
-      config.modResults.contents += `\ndefaultConfig {\n\tmissingDimensionStrategy ${escape(
+      config.modResults.contents += `\nandroid {\n\tdefaultConfig {\n\t\tmissingDimensionStrategy ${escape(
         key
-      )}, ${escape(props[key] ?? "")}\n}\n`;
+      )}, ${escape(props[key] ?? "")}\n\t}\n}\n`;
     }
 
     return config;
